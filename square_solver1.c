@@ -12,7 +12,7 @@
 
 //===================================================================================
 
-const double ACCURACY = 1E-6;
+const double ACCURACY = 1E-5;
 const int INF_ROOTS = -1;
 const int NO_ROOTS = 0;
 const int NUMBER_OF_TESTS = 10;
@@ -45,27 +45,28 @@ int linear_solver(double b, double c, double* x1)   //функция решения линейного 
     assert(b  != NAN);
     assert(c  != NAN);
 
-    if ( is_zero(b) && is_zero(c) )
+    if(is_zero(b) && is_zero(c))
     {
         return INF_ROOTS;
     }
 
-    if ( is_zero(b) && !is_zero(c) )
+    if(is_zero(b) && !is_zero(c))
     {
         return NO_ROOTS;
     }
 
-    if ( !is_zero(b) && is_zero(c) )
+    if(!is_zero(b) && is_zero(c))
     {
         *x1 = 0;
         return 1;
     }
 
-    if ( !is_zero(b) && !is_zero(c) )
+    if(!is_zero(b) && !is_zero(c))
     {
         *x1 = -c / b;
         return 1;
     }
+return 3;
 }
 
 //===================================================================================
@@ -75,18 +76,19 @@ int square_solver(double a, double b, double c, double* x1, double* x2)     // ф
 {
     assert(x1 != NULL);
     assert(x2 != NULL);
-    assert(a  != NAN);
-    assert(b  != NAN);
-    assert(c  != NAN);
+    assert(x1 !=   x2);
+    assert(a  !=  NAN);
+    assert(b  !=  NAN);
+    assert(c  !=  NAN);
 
     double discr = b * b - 4 * a * c;
 
-    if (discr < 0)
+    if(discr < 0)
     {
         return NO_ROOTS;
     }
 
-    if ( is_zero(discr) )
+    if(is_zero(discr))
     {
         *x1 = *x2 = -b / (2 * a);
         return 1;
@@ -108,9 +110,9 @@ int square_solver(double a, double b, double c, double* x1, double* x2)     // ф
 
 int is_zero(double value)   // функция сравнения с нулем
 {
-    if ( fabs(value) >= ACCURACY )
-        return 0;     //if value > 0
-        return 1;     //if value == 0
+    if(fabs(value) >= ACCURACY)
+    return 0;     //if value > 0
+return 1;         //if value == 0
 }
 
 //===================================================================================
@@ -134,58 +136,55 @@ void unit_test()
         int number_of_roots = NAN;
         fscanf(input, "%lg %lg %lg %d %lg %lg\n", &a, &b, &c, &number_of_roots, &res1, &res2);
 
-      //  if (fscanf(input, "%lg %lg %lg %d %lg %lg\n", &a, &b, &c, &number_of_roots, &res1, &res2) != 6)
-      //      printf("ERROR IN FILE\n");
-
         int nRoots = 0;
         double x1 = 0, x2 = 0;
 
-        if ( !is_zero(a) )
+        if(!is_zero(a))
             nRoots = square_solver(a, b, c, &x1, &x2);
         else
             nRoots = linear_solver(b, c, &x1);
 
         switch_nRoots(nRoots, x1, x2);
 
-        if (number_of_roots == nRoots)
+        if(number_of_roots == nRoots)
         {
-            if (nRoots == INF_ROOTS)
+            if(nRoots == INF_ROOTS)
                 fprintf(output, "YES\n");
 
-            if (nRoots == 1)
+            if(nRoots == 1)
             {
-                if (x1 - res1 < ACCURACY)
+                if(is_zero(x1 - res1))
                     fprintf(output, "YES\n");
                 else
                 {
-                    fprintf(output, "NO\n");
+                    fprintf(output, "TEST %d FAILED\n", i + 1);
                     test_failed = test_failed + 1;
                 }
             }
 
-            if (nRoots == 2)
+            if(nRoots == 2)
             {
-                if ( (x1 - res1 < ACCURACY) && (x2 - res2 < ACCURACY) )
+                if((is_zero(x1 - res1)) && (is_zero(x2 - res2)))
                     fprintf(output, "YES\n");
                 else
                 {
-                    fprintf(output, "NO\n");
+                    fprintf(output, "TEST %d FAILED\n", i + 1);
                     test_failed = test_failed + 1;
                 }
             }
 
-            if (nRoots = NO_ROOTS)
+            if(nRoots == NO_ROOTS)
                 fprintf(output, "YES\n");
         }
 
         else
         {
-            fprintf(output, "NO\n");
+            fprintf(output, "TEST %d FAILED\n", i + 1);
             test_failed = test_failed + 1;
         }
     }
 
-    if (test_failed == 0)
+    if(test_failed == 0)
         printf("ALL TESTS ARE DONE\n");
     else
         printf("TESTS FAILED: %d", test_failed);
@@ -205,7 +204,7 @@ int manual_test()
            "Enter 3 coefficients of squad equation a, b, c:\n");
     scanf("%lg %lg %lg", &a, &b, &c);
 
-    if (scanf("%lg %lg %lg", &a, &b, &c) != 3)
+    if(scanf("%lg %lg %lg", &a, &b, &c) != 3)
     {
         printf("ERROR\n");
         return 0;
@@ -217,17 +216,18 @@ int manual_test()
     double x1 = NAN, x2 = NAN;
     int nRoots = 0;
 
-    if (!is_zero(a))
+    if(!is_zero(a))
         nRoots = square_solver(a, b, c, &x1, &x2);
     else
         nRoots = linear_solver(b, c, &x1);
     switch_nRoots(nRoots, x1, x2);
+return 0;
 }
 
 //===================================================================================
 void switch_nRoots(int nRoots, double x1, double x2)
 {
-    switch (nRoots)
+    switch(nRoots)
     {
         case 0:         printf("No roots!\n");
                         break;
