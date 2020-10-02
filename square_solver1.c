@@ -31,8 +31,7 @@ void switch_nRoots(int nRoots, double x1, double x2);
 /*!
     \brief Square equations solver
     \version 1.0.0
-
-
+    Use this function for unit test and manual test
 */
 
 int main()
@@ -196,7 +195,7 @@ int square_solver(double a, double b, double c, double* x1, double* x2)     // ô
 //===================================================================================
 
 /*!
-    \brief
+    \brief This function determines is value == 0 or not
     \param[in] value
     \return 0 if value >= ACCURACY
             1 if value < ACCURACY
